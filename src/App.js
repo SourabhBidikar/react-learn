@@ -15,8 +15,19 @@ import { Home } from './pagesForRouting/Home';
 import { Menu } from './pagesForRouting/Menu';
 import { Contact } from './pagesForRouting/Contact';
 import Navigation from './pagesForRouting/Navigation';
+import Profile from './ContextApiComps/profile';
+
+import { createContext,useState } from 'react';
+
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+
+export const AppContext= createContext();
 
 function App() {
+
+  const client = new QueryClient();
+  const [username,setUsername]= useState("Pedro") ;
+
   return (
     <div className={styles.App}>
       
@@ -31,13 +42,16 @@ function App() {
       <DemoStatesCSS/>
       <Counter></Counter>
       <DemoUseeffect1_p2/>
-       
+       <CatFact/>
       <AgeGenerator/>
       </> */}
-
-
+      
+      
 
       {/* Start for Routing  */}
+      <QueryClientProvider client={client}>
+      <AppContext.Provider value={{username,setUsername}}>
+     
       <Router>
         <Navigation></Navigation>
         <Routes>
@@ -45,10 +59,14 @@ function App() {
           <Route path="/home" element ={<Home/>}/>
           <Route path="/menu" element ={<Menu/>}/>
           <Route path="/contact" element ={<Contact/>}/>
-          <Route path="/catfact" element ={<CatFact/>}/>
+          <Route path="/profile" element ={<Profile/>}/>
+        
           <Route path="/*" element ={<h1>404 Error Page not found</h1>}/>
         </Routes>
       </Router>
+    
+      </AppContext.Provider>
+      </QueryClientProvider>
 
     </div>
   );
